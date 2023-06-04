@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PracticeApp.BL.Model
 {
+    [Serializable]
     public class User
     {
         #region Properties.
