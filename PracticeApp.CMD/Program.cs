@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 
 namespace PracticeApp.CMD
 {
@@ -6,7 +7,7 @@ namespace PracticeApp.CMD
     {
         static void Main(string[] args)
         {
-
+            
         }
     }
 }
