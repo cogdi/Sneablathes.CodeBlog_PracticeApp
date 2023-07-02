@@ -17,37 +17,67 @@ namespace PracticeApp.BL.Controller
         /// <summary>
         /// User of the app.
         /// </summary>
-        public User User { get; }
+
+        public List<User> Users { get; }
+
+        public User CurrentUser { get; }
+
+        public bool IsNewUser { get; } = false;
 
         /// <summary>
         /// Creating a new controller of the user.
         /// </summary>
         /// <param name="user"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public UserController (string userName, string genderName, DateTime dateOfBirth, double weight, double height)
+        public UserController (string userName)
         {
-            // TODO: Checking
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentNullException("Name can't be null!", nameof(userName));
+            }
 
-            var gender = new Gender(genderName);
-            User = new User(userName, gender, dateOfBirth, weight, height);
+            Users = GetUsersData();
+
+            CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
+
+            if (CurrentUser == null)
+            {
+                CurrentUser = new User(userName);
+                Users.Add(CurrentUser);
+                IsNewUser = true;
+                Save();
+            }
         }
 
         /// <summary>
-        /// Get user's data.
+        /// Get saved list of users.
         /// </summary>
         /// <returns></returns>
         /// <exception cref="FileLoadException"></exception>
-        public UserController()
+        private List<User> GetUsersData()
         {
             var formatter = new BinaryFormatter();
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-                if (formatter.Deserialize(fs) is User user)
+                if (formatter.Deserialize(fs) is List<User> users)
                 {
-                    User = user;
+                    return users;
                 }
+            else
+                {
+                    return new List<User>();
+                }
+        }
 
-            // TODO: What to do if we couldn't read the user?
+        public void SetNewUserData(string genderName, DateTime dateOfBirth, double weight = 1, double height = 1)
+        {
+            // Null checking.
+
+            CurrentUser.Gender = new Gender(genderName);
+            CurrentUser.DateOfBirth = dateOfBirth;
+            CurrentUser.Weight = weight;
+            CurrentUser.Height = height;
+            Save();
         }
 
         /// <summary>
@@ -59,7 +89,7 @@ namespace PracticeApp.BL.Controller
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                formatter.Serialize(fs, User);
+                formatter.Serialize(fs, Users);
             }
         }
     }

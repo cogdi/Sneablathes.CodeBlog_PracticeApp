@@ -18,12 +18,12 @@ namespace PracticeApp.BL.Model
         /// <summary>
         /// User's gender.
         /// </summary>
-        public Gender Gender { get; }
+        public Gender Gender { get; set; }
 
         /// <summary>
         /// User's date of birth.
         /// </summary>
-        public DateTime DateOfBirth { get; }
+        public DateTime DateOfBirth { get; set; }
         
         /// <summary>
         /// User's weight.
@@ -34,6 +34,12 @@ namespace PracticeApp.BL.Model
         /// User's height.
         /// </summary>
         public double Height { get; set; }
+
+        /// <summary>
+        /// User's age.
+        /// </summary>
+        public int Age { get { return DateTime.Now.Year - DateOfBirth.Year; } }
+
         #endregion
 
         /// <summary>
@@ -86,9 +92,19 @@ namespace PracticeApp.BL.Model
             Height = height;
         }
 
+        public User(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("Name can't be equal to null.", nameof(name));
+            }
+
+            Name = name;
+        }
+
         public override string ToString()
         {
-            return Name;
+            return Name + " " + Age;
         }
     }
 }

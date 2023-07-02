@@ -12,32 +12,49 @@ namespace PracticeApp.CMD
         {
             Console.WriteLine("Welcome to the FitnessApp.");
 
-            Console.WriteLine("Enter the user's name: ");
+            Console.Write("Enter the user's name: ");
             var name = GetNotEmptyString(Console.ReadLine());
 
-            Console.WriteLine("Enter the user's gender: ");
-            var gender = GetNotEmptyString(Console.ReadLine());
+            var userController = new UserController(name);
 
-            Console.WriteLine("Enter the user's date of birth: ");
-            var dateOfBirth = DateTime.Parse(GetNotEmptyString(Console.ReadLine()));
+            if (userController.IsNewUser)
+            {
+                Console.Write("Enter the user's gender: ");
+                var gender = GetNotEmptyString(Console.ReadLine());
 
-            Console.WriteLine("Enter the user's weight: ");
-            var weight = double.Parse(GetNotEmptyString(Console.ReadLine()));
+                DateTime dateOfBirth;
+                double weight = GetParsedDouble("weight");
+                double height = GetParsedDouble("height");
 
-            Console.WriteLine("Enter the user's height: ");
-            var height = double.Parse(GetNotEmptyString(Console.ReadLine()));
+                dateOfBirth = ParseDateTime();
 
-            var userController = new UserController(name, gender, dateOfBirth, weight, height);
-            userController.Save();
+                userController.SetNewUserData(gender, dateOfBirth, weight, height);
+            }
+
+            Console.WriteLine(userController.CurrentUser);
         }
 
-        static string GetNotEmptyString(string message)
+        private static DateTime ParseDateTime()
+        {
+            while (true)
+            {
+                Console.Write("Enter the user's Date Of Birth (DD.MM.YYYY): ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime value))
+                {
+                    return value;
+                }
+
+                Console.WriteLine("Wrong format of the date!");
+            }
+        }
+
+        private static string GetNotEmptyString(string message)
         {
             while (true)
             {
                 if (string.IsNullOrWhiteSpace(message))
                 {
-                    Console.WriteLine(message + " can not be empty!");
+                    Console.WriteLine("You've written an empty string! Try again.");
                     message = Console.ReadLine();
                 }
 
@@ -48,6 +65,20 @@ namespace PracticeApp.CMD
             }
 
             return message;
+        }
+
+        private static double GetParsedDouble(string name)
+        {
+            while (true)
+            {
+                Console.Write($"Enter the user's {name}: ");
+                if (double.TryParse(Console.ReadLine(), out double value))
+                {
+                    return value;
+                }
+
+                Console.WriteLine($"Wrong format of {name}");
+            }
         }
     }
 }
