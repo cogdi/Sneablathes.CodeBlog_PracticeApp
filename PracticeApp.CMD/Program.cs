@@ -16,6 +16,7 @@ namespace PracticeApp.CMD
             var name = GetNotEmptyString(Console.ReadLine());
 
             var userController = new UserController(name);
+            var eatingController = new EatingController(userController.CurrentUser);
 
             if (userController.IsNewUser)
             {
@@ -32,6 +33,38 @@ namespace PracticeApp.CMD
             }
 
             Console.WriteLine(userController.CurrentUser);
+
+            Console.WriteLine("What do you want to do?");
+            Console.WriteLine("\tE - write the last meal");
+            var key = Console.ReadKey();
+            Console.WriteLine();
+
+            if (key.Key == ConsoleKey.E)
+            {
+                var foods = EnterEating();
+                eatingController.Add(foods.food, foods.weight);
+
+                foreach (var item in eatingController.Eating.Foods)
+                {
+                    Console.WriteLine($"\t{item.Key} - {item.Value}");
+                }
+            }
+        }
+
+        private static (Food food, double weight) EnterEating()
+        {
+            Console.Write("Enter the food's name: ");
+            var foodName = GetNotEmptyString(Console.ReadLine());
+
+            var calories = GetParsedDouble("calories");
+            var proteins = GetParsedDouble("proteins");
+            var fats = GetParsedDouble("fats");
+            var carbs = GetParsedDouble("carbs");
+
+            var weight = GetParsedDouble("weight");
+            var food = new Food(foodName, proteins, fats, carbs, calories);
+
+            return (food, weight);
         }
 
         private static DateTime ParseDateTime()
@@ -77,7 +110,7 @@ namespace PracticeApp.CMD
                     return value;
                 }
 
-                Console.WriteLine($"Wrong format of {name}");
+                Console.WriteLine($"Wrong format of the {name}");
             }
         }
     }

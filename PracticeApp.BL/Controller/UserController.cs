@@ -12,8 +12,10 @@ namespace PracticeApp.BL.Controller
     /// <summary>
     /// User's controller.
     /// </summary>
-    public class UserController
+    public class UserController : BaseController
     {
+        private const string USERS_FILE_NAME = "users.dat";
+
         /// <summary>
         /// User of the app.
         /// </summary>
@@ -56,17 +58,7 @@ namespace PracticeApp.BL.Controller
         /// <exception cref="FileLoadException"></exception>
         private List<User> GetUsersData()
         {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-                if (fs.Length > 0 && formatter.Deserialize(fs) is List<User> users)
-                {
-                    return users;
-                }
-                else
-                {
-                    return new List<User>();
-                }
+            return Load<List<User>>(USERS_FILE_NAME) ?? new List<User>();
         }
 
         public void SetNewUserData(string genderName, DateTime dateOfBirth, double weight = 1, double height = 1)
@@ -85,12 +77,7 @@ namespace PracticeApp.BL.Controller
         /// </summary>
         public void Save()
         {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Users);
-            }
+            Save(USERS_FILE_NAME, Users);
         }
     }
 }
