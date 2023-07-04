@@ -10,26 +10,26 @@ using System.Threading.Tasks;
 namespace PracticeApp.BL.Controller.Tests
 {
     [TestClass()]
-    public class EatingControllerTests
+    public class ExerciseControllerTests
     {
         [TestMethod()]
         public void AddTest()
         {
             // Arrange
             var userName = Guid.NewGuid().ToString();
-            var foodName = Guid.NewGuid().ToString();
+            var activityName = Guid.NewGuid().ToString();
 
             var userController = new UserController(userName);
-            var eatingController = new EatingController(userController.CurrentUser);
+            var exerciseController = new ExerciseController(userController.CurrentUser);
 
             var random = new Random();
-            var food = new Food(foodName, random.Next(50, 500), random.Next(50, 500), random.Next(50, 500), random.Next(50, 500));
+            var activity = new Activity(activityName, random.Next(10, 50));
 
             // Act
-            eatingController.Add(food, 100);
+            exerciseController.Add(activity, DateTime.Now, DateTime.Now.AddHours(1));
 
             // Assert
-            Assert.AreEqual(food.Name, eatingController.Eating.Foods.First().Key.Name);
+            Assert.AreEqual(activityName, exerciseController.Activities.First().Name);
         }
     }
 }
