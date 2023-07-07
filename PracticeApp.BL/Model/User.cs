@@ -10,10 +10,12 @@ namespace PracticeApp.BL.Model
     public class User
     {
         #region Properties.
+        public int Id { get; set; }
+
         /// <summary>
         /// User's name.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// User's gender.
@@ -91,6 +93,8 @@ namespace PracticeApp.BL.Model
             Weight = weight;
             Height = height;
         }
+
+        public User() { }
 
         public User(string name)
         {

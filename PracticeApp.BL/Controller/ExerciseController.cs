@@ -9,9 +9,6 @@ namespace PracticeApp.BL.Controller
 {
     public class ExerciseController : BaseController
     {
-        private const string EXERCISES_FILE_NAME = "exercises.dat";
-        private const string ACTIVITIES_FILE_NAME = "activities.dat";
-
         private readonly User user;
 
         public List<Exercise> Exercises { get; }
@@ -26,12 +23,12 @@ namespace PracticeApp.BL.Controller
 
         private List<Exercise> GetAllExercises()
         {
-            return Load<List<Exercise>>(EXERCISES_FILE_NAME) ?? new List<Exercise>();
+            return Load<Exercise>() ?? new List<Exercise>();
         }
 
         private List<Activity> GetAllActivities()
         {
-            return Load<List<Activity>>(ACTIVITIES_FILE_NAME) ?? new List<Activity>();
+            return Load<Activity>() ?? new List<Activity>();
         }
 
         public void Add(Activity activity, DateTime start, DateTime finish)
@@ -56,8 +53,8 @@ namespace PracticeApp.BL.Controller
 
         private void Save()
         {
-            Save(EXERCISES_FILE_NAME, Exercises);
-            Save(ACTIVITIES_FILE_NAME, Activities);
+            Save(Exercises);
+            Save(Activities);
         }
     }
 }

@@ -12,9 +12,14 @@ namespace PracticeApp.BL.Model
     [Serializable]
     public class Eating
     {
-        public User User { get; }
-        public Dictionary<Food, double> Foods { get; }
-        public DateTime LastMealTime { get; }
+        public int Id { get; set; }
+
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
+        public Dictionary<Food, double> Foods { get; set; }
+        public DateTime LastMealTime { get; set; }
+
+        public Eating() { }
 
         public Eating(User user)
         {

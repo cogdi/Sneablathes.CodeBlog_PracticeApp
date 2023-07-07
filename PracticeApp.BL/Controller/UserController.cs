@@ -14,8 +14,6 @@ namespace PracticeApp.BL.Controller
     /// </summary>
     public class UserController : BaseController
     {
-        private const string USERS_FILE_NAME = "users.dat";
-
         /// <summary>
         /// User of the app.
         /// </summary>
@@ -47,7 +45,7 @@ namespace PracticeApp.BL.Controller
                 CurrentUser = new User(userName);
                 Users.Add(CurrentUser);
                 IsNewUser = true;
-                Save();
+                //Save();
             }
         }
 
@@ -58,7 +56,7 @@ namespace PracticeApp.BL.Controller
         /// <exception cref="FileLoadException"></exception>
         private List<User> GetUsersData()
         {
-            return Load<List<User>>(USERS_FILE_NAME) ?? new List<User>();
+            return Load<User>() ?? new List<User>();
         }
 
         public void SetNewUserData(string genderName, DateTime dateOfBirth, double weight = 1, double height = 1)
@@ -77,7 +75,7 @@ namespace PracticeApp.BL.Controller
         /// </summary>
         public void Save()
         {
-            Save(USERS_FILE_NAME, Users);
+            Save(Users);
         }
     }
 }

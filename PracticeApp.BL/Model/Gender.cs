@@ -12,16 +12,21 @@ namespace PracticeApp.BL.Model
     [Serializable]
     public class Gender
     {
+        public int Id { get; set; }
+
         /// <summary>
         /// Gender's name.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Create a new gender.
         /// </summary>
         /// <param name="name">Gender's name.</param>
         /// <exception cref="ArgumentNullException">Thrown when Name equals to null.</exception>
+
+        public Gender() { }
+
         public Gender(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
